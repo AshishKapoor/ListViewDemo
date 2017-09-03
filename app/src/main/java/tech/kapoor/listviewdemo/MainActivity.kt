@@ -4,11 +4,14 @@ import android.content.Context
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
+import org.w3c.dom.Text
+
 class MainActivity : AppCompatActivity() {
 
 
@@ -17,22 +20,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val listView = findViewById<ListView>(R.id.main_listview)
-        var redColor = Color.parseColor("#FF0000")
-
-        listView.setBackgroundColor(redColor)
         listView.adapter = CustomAdapter(this)
     }
 
     private class CustomAdapter(context: Context) : BaseAdapter() {
 
         private val mContext: Context
+        private val names = arrayListOf<String>(
+                "Ashish0","Ashish1","Ashish2","Ashish3","Ashish4"
+        )
 
         init {
             mContext = context
         }
 
         override fun getCount(): Int {
-            return 80
+            return names.size
         }
 
         override fun getItemId(position: Int): Long {
@@ -44,9 +47,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
-            val textView = TextView(mContext)
-            textView.text = "Here comes the !!"
-            return textView
+            val layoutInflater = LayoutInflater.from(mContext)
+            val rowMain = layoutInflater.inflate(R.layout.row_main, viewGroup, false)
+            val nameTextView = rowMain.findViewById<TextView>(R.id.name_textView)
+            val positionTextView = rowMain.findViewById<TextView>(R.id.position_textView)
+            positionTextView.text = "This is the row number...$position"
+            nameTextView.text = names[position]
+            return rowMain
         }
     }
 }
